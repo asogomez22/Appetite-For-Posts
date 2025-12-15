@@ -1,0 +1,15 @@
+@import "tailwindcss";
+
+@theme {
+  --font-gnr: 'gnr', serif;
+}
+
+@font-face {
+  font-family: 'gnr';
+  src: url('./assets/fonts/CorvinusSkylineICG.woff2') format('woff2'),
+       url('./assets/fonts/CorvinusSkylineICG.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
