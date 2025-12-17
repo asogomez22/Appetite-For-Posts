@@ -11,11 +11,11 @@ gsap.registerPlugin(ScrollTrigger);
 function Home() {
   const [articles, setArticles] = useState([]);
   const containerRef = useRef(null); 
-  const fullImageRef = useRef(null); // Ref para la imagen de fondo completa
-  const maskedImageRef = useRef(null); // Ref para la imagen recortada (logo)
+  const fullImageRef = useRef(null); // Foto de fondo completa (Capa 1)
+  const maskedImageRef = useRef(null); // Foto recortada con logo (Capa 2)
   const textRef = useRef(null);
 
-  // --- Fetch y Sockets (Sin cambios) ---
+  // --- Fetch y Sockets ---
   useEffect(() => {
     fetch("http://localhost:8000/api/articles/")
       .then((res) => res.json())
@@ -40,38 +40,39 @@ function Home() {
         scrollTrigger: {
           trigger: containerRef.current,
           start: "top top",
-          end: "+=200%", 
+          end: "+=100%", // Aumenté esto para que el zoom dure más tiempo al hacer scroll
           scrub: 1,      
           pin: true,     
         },
       });
 
-      // 1. LA IMAGEN DE FONDO COMPLETA DESAPARECE
-      // Esto revela el fondo negro gradualmente mientras hacemos zoom out
+      // 1. EL FONDO COMPLETO SE DESVANECE
       tl.to(fullImageRef.current, {
         opacity: 0,
         ease: "power1.inOut",
-        duration: 0.5 // Desaparece a mitad del scroll para dar paso al logo
+        duration: 0.5 
       }, 0);
 
-      // 2. LA CAPA DEL LOGO SE ENCOGE Y SE VUELVE BLANCA
+      // 2. LA CAPA DEL LOGO (ZOOM)
       tl.fromTo(
         maskedImageRef.current,
         { 
-          scale: 30, // Empieza gigante (sincronizado visualmente con la capa de fondo)
+          // --- AQUÍ ESTÁ LA PROPIEDAD QUE BUSCAS ---
+          scale: 150, // ANTES 30. AHORA 150 (Mucho más zoom inicial)
+          // -----------------------------------------
           filter: "brightness(1)",
         },
         { 
-          scale: 1, 
-          // Al final quemamos la foto para que parezca un logo blanco sólido
-          filter: "brightness(10) contrast(1) grayscale(1)", 
+          scale: 1, // Termina en tamaño normal
+          // Efecto final: se vuelve blanco
+          filter: "brightness(1)  grayscale(1)", 
           ease: "power2.inOut",
         },
         0
       );
 
-      // 3. TEXTO DESAPARECE
-      tl.to(textRef.current, { opacity: 0, scale: 0.5, duration: 0.2 }, 0);
+      // 3. TEXTO DESAPARECE RÁPIDO
+      tl.to(textRef.current, { opacity: 0, scale: 0.5, duration: 0.1 }, 0);
 
     }, containerRef);
 
@@ -87,11 +88,7 @@ function Home() {
         {/* CONTENEDOR PINNED (FONDO NEGRO) */}
         <div ref={containerRef} className="relative w-full h-screen z-10 overflow-hidden flex flex-col items-center justify-center bg-black">
             
-            {/* 
-                CAPA 1: IMAGEN DE FONDO COMPLETA ("SAFETY NET")
-                Esta capa asegura que veas la foto completa al principio, 
-                incluso si el centro de tu logo es transparente.
-            */}
+            {/* CAPA 1: FONDO COMPLETO (Para que no se vea negro al principio) */}
             <div 
                 ref={fullImageRef}
                 className="absolute inset-0 z-0 w-full h-full"
@@ -102,20 +99,15 @@ function Home() {
                 }}
             />
 
-            {/* 
-                CAPA 2: IMAGEN RECORTADA CON MÁSCARA (LOGO)
-                Esta está encima. Al principio es invisible (porque es gigante y 
-                se funde con la de abajo). Al encogerse, es la única que queda.
-            */}
+            {/* CAPA 2: MÁSCARA (LOGO) */}
             <div 
               ref={maskedImageRef}
               className="relative z-10 w-[80vw] aspect-[3/1] flex items-center justify-center will-change-transform"
               style={{
-                backgroundImage: "url('/hero.jpg')",
+                backgroundColor: "white",
                 backgroundSize: "cover",
                 backgroundPosition: "center center",
                 
-                // MÁSCARA
                 maskImage: "url('/gnr_logo_mask.png')",
                 maskSize: "contain",
                 maskRepeat: "no-repeat",
