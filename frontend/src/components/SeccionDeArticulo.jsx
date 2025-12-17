@@ -1,5 +1,5 @@
 function SeccionDeArticulo({ children, tituloSeccion = "Articulo", bg = "1", url, boton = true }) {
-  let bgClass = bg === "2" ? "#2c2b1fff" : "#161515ff";
+  let bgClass = bg === "2" ? "#101820" : "#161515ff";
 
   return (
     <div  style={{ backgroundColor: bgClass }} className={`pt-10 flex justify-center items-center pb-16`}>
@@ -15,7 +15,7 @@ function SeccionDeArticulo({ children, tituloSeccion = "Articulo", bg = "1", url
           </div>
           <div className="w-full flex justify-center mt-10">
             {boton && (
-              <button className="text-md bg-yellow-500 text-black font-bold px-8 py-4 rounded hover:bg-yellow-600 transition duration-200 w-full sm:w-auto">
+              <button className="text-md bg-yellow-500 text-black font-bold px-8 py-4 rounded hover:bg-yellow-600 hover:scale-110 transition duration-200 w-full sm:w-auto">
                 <a href={url}>Ver más posts de '{tituloSeccion}'</a>
               </button>
             )}

@@ -34,7 +34,7 @@ function SeccionDeContacto() {
           ></textarea>
           <button
             type="button"
-            className="text-black bg-yellow-500 transition hover:bg-yellow-600 tracking-wide rounded-md text-sm font-medium px-4 py-3 w-full cursor-pointer !mt-2 border-0"
+            className="text-black bg-yellow-500 transition hover:bg-yellow-600 tracking-wide rounded-md text-sm font-medium px-4 py-3 w-full cursor-pointer mt-2 border-0"
           >
             Enviar Mensaje
           </button>
