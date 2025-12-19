@@ -1,4 +1,4 @@
-import Navbar from "../components/Navbar"
+import Navbar from "../components/NavbarHero"
 import Footer from "../components/Footer"
 import SeccionDeArticulo from "../components/SeccionDeArticuloConBuscador"
 import ArticleCard from '../components/ArticleCard';

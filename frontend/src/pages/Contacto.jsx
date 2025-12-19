@@ -1,4 +1,4 @@
-import Navbar from '../components/Navbar'
+import Navbar from '../components/NavbarHero'
 import SeccionDeContacto from '../components/SeccionDeContacto'
 import Footer from '../components/Footer'
 import Hero from '../components/Hero'

@@ -10,6 +10,8 @@ function Navbar() {
         Appetite for Posts
       </a>
       <nav className="flex gap-4 sm:gap-8 text-xl sm:text-2xl lg:text-3xl">
+        <Enlace/>
+        <Enlace url="/sobregnr" nombre="Sobre GN'R" />
         <Enlace url="/noticias" nombre="Noticias" />
         <Enlace url="/articulos" nombre="Artículos" />
         <Enlace url="/contacto" nombre="Contacto" />
