@@ -11,8 +11,8 @@ import Discografia from './pages/Discografia';
 import Entrevistas from './pages/Entrevistas';
 import ArticuloDetalle from './pages/ArticuloDetalle';
 import DetalleArticulo from './pages/ArticuloDetalle';
-import SobreLaBanda from './pages/SobreLaBanda';
-
+import SobreLaBanda from './pages/Formacion';
+import Integrantes from './pages/Integrantes';
 
 
 function App() {
@@ -36,8 +36,9 @@ function App() {
             <Route path="/discografia" element={<Discografia />} />
             <Route path="/entrevistas" element={<Entrevistas />} />
             <Route path="/articulo/:id" element={<DetalleArticulo />} />         
-            <Route path="/sobregnr" element={<SobreLaBanda />} />         
-
+            <Route path="/sobregnr" element={<SobreLaBanda />} />   
+            <Route path="/integrantes" element={<Integrantes />} />               
+            <Route path="/albumes" element={<Albumes />} />               
           </Routes>
         </Router>
       </main>

@@ -1,8 +1,5 @@
 @import "tailwindcss";
 
-
-
-
 @theme {
   --font-gnr: 'gnr', serif;
 }
