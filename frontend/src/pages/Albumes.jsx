@@ -1,282 +1,323 @@
-import { useLayoutEffect, useRef, useState } from "react";
+import React, { useLayoutEffect, useRef } from "react";
 import Navbar from "../components/NavbarHero";
 import Footer from "../components/Footer";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { motion, useMotionTemplate, useMotionValue, useSpring, useTransform, useScroll, useVelocity, useAnimationFrame } from "framer-motion";
 
 gsap.registerPlugin(ScrollTrigger);
 
-// --- DATOS DE DISCOGRAFÍA ---
 const albums = [
   { 
-    title: "Appetite for Destruction", 
-    year: "1987", 
-    cover: "/appetite.jpg", // Asegúrate de tener estas imágenes
-    sales: "30M+ Copias",
+    titulo: "Appetite for Destruction", 
+    anyo: "1987", 
+    portada: "/afd.jpg", 
+    ventas: "30M+ Copias",
     hits: ["Welcome to the Jungle", "Sweet Child O' Mine", "Paradise City"]
   },
   { 
-    title: "G N' R Lies", 
-    year: "1988", 
-    cover: "/lies.jpg", 
-    sales: "10M+ Copias",
+    titulo: "G N' R Lies", 
+    anyo: "1988", 
+    portada: "/lies.jpg", 
+    ventas: "10M+ Copias",
     hits: ["Patience", "Used to Love Her", "One in a Million"]
   },
   { 
-    title: "Use Your Illusion I", 
-    year: "1991", 
-    cover: "/uyi1.jpg", 
-    sales: "17M+ Copias",
+    titulo: "Use Your Illusion I", 
+    anyo: "1991", 
+    portada: "/uyi1.jpg", 
+    ventas: "17M+ Copias",
     hits: ["November Rain", "Don't Cry", "Live and Let Die"]
   },
   { 
-    title: "Use Your Illusion II", 
-    year: "1991", 
-    cover: "/uyi2.jpg", 
-    sales: "16M+ Copias",
+    titulo: "Use Your Illusion II", 
+    anyo: "1991", 
+    portada: "/uyi2.jpg", 
+    ventas: "16M+ Copias",
     hits: ["You Could Be Mine", "Civil War", "Knockin' on Heaven's Door"]
   },
   { 
-    title: "The Spaghetti Incident?", 
-    year: "1993", 
-    cover: "/spaghetti.jpg", 
-    sales: "6M+ Copias",
+    titulo: "The Spaghetti Incident?", 
+    anyo: "1993", 
+    portada: "/tsi.jpg", 
+    ventas: "6M+ Copias",
     hits: ["Ain't It Fun", "Since I Don't Have You", "Hair of the Dog"]
   },
   { 
-    title: "Chinese Democracy", 
-    year: "2008", 
-    cover: "/chinese.jpg", 
-    sales: "3M+ Copias",
+    titulo: "Chinese Democracy", 
+    anyo: "2008", 
+    portada: "/cd.jpg", 
+    ventas: "3M+ Copias",
     hits: ["Chinese Democracy", "Better", "This I Love"]
   },
 ];
 
-// --- ATMÓSFERA GRANO (Consistencia visual) ---
-const GrainAtmosphere = () => (
-    <div className="fixed inset-0 z-0 pointer-events-none mix-blend-overlay opacity-[0.12]">
-        <svg className="w-full h-full">
-            <filter id="noiseFilter">
-                <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" stitchTiles="stitch" />
-            </filter>
-            <rect width="100%" height="100%" filter="url(#noiseFilter)"/>
-        </svg>
-    </div>
-);
-
-// --- COMPONENTE: VINYL CARD 3D ---
-const VinylCard = ({ album, index }) => {
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-
-  // Física del tilt (Portado de la vista de integrantes)
-  const springConfig = { stiffness: 150, damping: 20 };
-  const mouseX = useSpring(x, springConfig);
-  const mouseY = useSpring(y, springConfig);
-
-  const rotateX = useTransform(mouseY, [-0.5, 0.5], ["15deg", "-15deg"]);
-  const rotateY = useTransform(mouseX, [-0.5, 0.5], ["-15deg", "15deg"]);
-  
-  // Brillo especular
-  const highlightX = useTransform(mouseX, [-0.5, 0.5], ["0%", "100%"]);
-  const highlightY = useTransform(mouseY, [-0.5, 0.5], ["0%", "100%"]);
-  const highlightGradient = useMotionTemplate`radial-gradient(circle at ${highlightX} ${highlightY}, rgba(255,255,255,0.3) 0%, transparent 60%)`;
-
-  function handleMouseMove({ currentTarget, clientX, clientY }) {
-    const { left, top, width, height } = currentTarget.getBoundingClientRect();
-    x.set((clientX - left) / width - 0.5);
-    y.set((clientY - top) / height - 0.5);
-  }
-
-  function handleMouseLeave() {
-    x.set(0); y.set(0);
-  }
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 100 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-50px" }}
-      transition={{ duration: 0.8, delay: index * 0.1, ease: "easeOut" }}
-      className="relative w-full max-w-[400px] h-[550px] perspective-container mx-auto"
-      style={{ perspective: 1200 }}
-    >
-      <div 
-        className="group relative w-full h-[400px]" // Contenedor de la parte superior (Vinilo + Portada)
-        onMouseMove={handleMouseMove}
-        onMouseLeave={handleMouseLeave}
-      >
-        
-        {/* 1. EL DISCO DE VINILO (Detrás de la portada, sale al hover) */}
-        <div className="absolute top-2 bottom-2 left-2 right-2 rounded-full bg-black flex items-center justify-center shadow-2xl transition-all duration-700 ease-out group-hover:translate-x-[40%] group-hover:rotate-[180deg]">
-            {/* Textura de surcos del vinilo */}
-            <div className="absolute inset-0 rounded-full opacity-30" 
-                 style={{ background: "repeating-radial-gradient(#111 0, #111 2px, #222 3px, #222 4px)" }}></div>
-            
-            {/* Brillo del vinilo */}
-            <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-transparent via-white/10 to-transparent opacity-50"></div>
-
-            {/* Etiqueta del centro */}
-            <div className="w-1/3 h-1/3 bg-yellow-600 rounded-full border-4 border-black relative flex items-center justify-center">
-                 <div className="w-2 h-2 bg-black rounded-full"></div>
-                 <span className="absolute text-[0.4rem] font-mono text-black uppercase tracking-widest animate-spin-slow" style={{ animationDuration: '4s' }}>Guns N Roses</span>
-            </div>
-        </div>
-
-        {/* 2. LA PORTADA (Sleeve) con Tilt 3D */}
-        <motion.div
-          style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
-          className="relative w-full h-full bg-zinc-900 rounded-sm shadow-2xl z-20"
-        >
-            <img 
-                src={album.cover} 
-                alt={album.title} 
-                className="w-full h-full object-cover rounded-sm shadow-[5px_5px_15px_rgba(0,0,0,0.5)]"
-            />
-            
-            {/* Efecto de brillo sobre la portada */}
-            <motion.div
-                style={{ background: highlightGradient }}
-                className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none mix-blend-overlay rounded-sm z-30"
-            />
-            
-            {/* Borde desgastado sutil */}
-            <div className="absolute inset-0 border border-white/10 rounded-sm pointer-events-none"></div>
-        </motion.div>
-
-      </div>
-
-      {/* 3. INFORMACIÓN DEL ÁLBUM (Debajo) */}
-      <div className="mt-8 text-center relative z-10 px-4">
-         <h3 className="text-white font-gnr text-4xl md:text-5xl leading-none mb-2 drop-shadow-md">
-            {album.title}
-         </h3>
-         <div className="flex justify-center items-center gap-4 mb-4">
-             <span className="text-yellow-500 font-mono text-sm tracking-[0.2em]">{album.year}</span>
-             <span className="w-1 h-1 bg-zinc-600 rounded-full"></span>
-             <span className="text-zinc-400 font-serif text-xs uppercase tracking-wide">{album.sales}</span>
-         </div>
-
-         {/* Lista de Hits */}
-         <div className="border-t border-white/10 pt-4">
-            <p className="text-zinc-500 text-xs font-mono uppercase tracking-widest mb-2">Key Tracks</p>
-            <ul className="text-zinc-300 font-serif text-sm space-y-1">
-                {album.hits.map((hit, i) => (
-                    <li key={i} className="hover:text-yellow-500 transition-colors cursor-default">
-                        {hit}
-                    </li>
-                ))}
-            </ul>
-         </div>
-      </div>
-    </motion.div>
-  );
-};
-
-// --- MARQUESINA DE TEXTO ANIMADO (Hero) ---
-function ParallaxText({ children, baseVelocity = 100 }) {
-    const baseX = useMotionValue(0);
-    const { scrollY } = useScroll();
-    const scrollVelocity = useVelocity(scrollY);
-    const smoothVelocity = useSpring(scrollVelocity, { damping: 50, stiffness: 400 });
-    const velocityFactor = useTransform(smoothVelocity, [0, 1000], [0, 5], { clamp: false });
-  
-    const x = useTransform(baseX, (v) => `${v}%`);
-  
-    const directionFactor = useRef(1);
-    useAnimationFrame((t, delta) => {
-      let moveBy = directionFactor.current * baseVelocity * (delta / 1000);
-      if (velocityFactor.get() < 0) { directionFactor.current = -1; } 
-      else if (velocityFactor.get() > 0) { directionFactor.current = 1; }
-  
-      moveBy += directionFactor.current * moveBy * velocityFactor.get();
-      baseX.set(baseX.get() + moveBy);
-    });
-  
-    return (
-      <div className="overflow-hidden whitespace-nowrap flex flex-nowrap">
-        <motion.div className="flex whitespace-nowrap flex-nowrap" style={{ x }}>
-          <span className="block mr-12 font-gnr text-[15vw] md:text-[12vw] leading-none text-transparent bg-clip-text bg-gradient-to-b from-zinc-700 to-zinc-950 opacity-40">{children} </span>
-          <span className="block mr-12 font-gnr text-[15vw] md:text-[12vw] leading-none text-transparent bg-clip-text bg-gradient-to-b from-zinc-700 to-zinc-950 opacity-40">{children} </span>
-          <span className="block mr-12 font-gnr text-[15vw] md:text-[12vw] leading-none text-transparent bg-clip-text bg-gradient-to-b from-zinc-700 to-zinc-950 opacity-40">{children} </span>
-          <span className="block mr-12 font-gnr text-[15vw] md:text-[12vw] leading-none text-transparent bg-clip-text bg-gradient-to-b from-zinc-700 to-zinc-950 opacity-40">{children} </span>
-        </motion.div>
-      </div>
-    );
-  }
+const sencillos = [
+  { 
+    titulo: "ABSUЯD", 
+    anyo: "2021", 
+    portada: "/absurd.jpg"
+  },
+  { 
+    titulo: "Hard Skool", 
+    anyo: "2021", 
+    portada: "/hardskool.jpg"
+  },
+  { 
+    titulo: "Perhaps", 
+    anyo: "2023", 
+    portada: "perhaps.jpg"
+  },
+  { 
+    titulo: "The General", 
+    anyo: "2023", 
+    portada: "/thegeneral.jpg"
+  },
+  { 
+    titulo: "Nothin'", 
+    anyo: "2025", 
+    portada: "/nothin.jpg"
+  },
+  { 
+    titulo: "Atlas", 
+    anyo: "2025", 
+    portada: "/atlas.jpg"
+  },
+];
 
 function Discografia() {
-  const containerRef = useRef(null);
+  const mainContainerRef = useRef(null);
+  const heroRef = useRef(null);
+  const logoMaskRef = useRef(null);
+  const realLogoRef = useRef(null);
+  const textRef = useRef(null);
 
-  // Animación de entrada suave
   useLayoutEffect(() => {
     let ctx = gsap.context(() => {
-       gsap.from(".album-card", {
-          y: 100,
-          opacity: 0,
-          stagger: 0.1,
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: heroRef.current,
+          start: "top top",
+          end: "+=150%", // Duración del scroll
+          scrub: 1,
+          pin: true,
+          anticipatePin: 1,
+        },
+      });
+
+      const initialSize = "3000% auto";
+      const finalSize = "50% auto";
+
+      // 1. Animación de la máscara (Zoom out)
+      tl.fromTo(
+        [logoMaskRef.current, realLogoRef.current],
+        {
+          maskSize: initialSize,
+          webkitMaskSize: initialSize,
+          backgroundSize: initialSize,
+        },
+        {
+          maskSize: finalSize,
+          webkitMaskSize: finalSize,
+          backgroundSize: finalSize,
+          ease: "power2.out",
           duration: 1,
-          scrollTrigger: {
-             trigger: ".album-grid",
-             start: "top 80%",
-          }
-       });
-    }, containerRef);
+        },
+        0
+      );
+
+      // 2. Aparece el logo real
+      tl.fromTo(
+        realLogoRef.current,
+        { opacity: 0 },
+        {
+          opacity: 1,
+          ease: "power1.inOut",
+          duration: 0.6,
+        },
+        0.6
+      );
+
+      // 3. El texto desaparece al hacer scroll
+      tl.to(
+        textRef.current,
+        {
+          opacity: 0,
+          y: -50,
+          scale: 0.9,
+          ease: "power1.in",
+          duration: 0.5,
+        },
+        0
+      );
+    }, mainContainerRef);
+
     return () => ctx.revert();
   }, []);
 
   return (
-    <div ref={containerRef} className="bg-zinc-950 min-h-screen relative selection:bg-yellow-500 selection:text-black overflow-x-hidden">
-      <GrainAtmosphere />
+    <div ref={mainContainerRef} className="bg-zinc-950 min-h-screen relative text-white selection:bg-yellow-500 selection:text-black overflow-x-hidden">
       <Navbar />
       
-      <main className="relative z-10 pt-32 pb-20">
-        
-        {/* --- HEADER: MARQUESINA INFINITA --- */}
-        <section className="mb-24 relative">
-             <div className="absolute inset-0 bg-gradient-to-b from-zinc-950 via-transparent to-zinc-950 z-20 pointer-events-none"></div>
-             <ParallaxText baseVelocity={-2}>DISCOGRAPHY LEGACY </ParallaxText>
-             <ParallaxText baseVelocity={2}>STUDIO ALBUMS </ParallaxText>
-             
-             {/* Título superpuesto estático */}
-             <div className="absolute inset-0 flex items-center justify-center z-30 pointer-events-none">
-                 <h1 className="text-white font-gnr text-6xl md:text-8xl drop-shadow-[0_0_30px_rgba(234,179,8,0.3)]">
-                     THE RECORDS
-                 </h1>
-             </div>
-        </section>
+      
+      <section
+          ref={heroRef}
+          className="relative w-full h-screen flex items-center justify-center bg-zinc-950 z-0"
+        >
+          {/* Texto Central */}
+          <div
+            ref={textRef}
+            className="relative z-30 text-center pointer-events-none w-full transform translate-y-10"
+          >
+            <div className="flex flex-col items-center justify-center text-white font-serif px-6 drop-shadow-md">
+              <div className="flex flex-col w-full max-w-4xl">
+                <h1 className="font-gnr text-9xl text-yellow-500 mb-4 drop-shadow-[0_0_15px_rgba(234,179,8,0.3)]">
+                  DISCOGRAFÍA
+                </h1>
+                <p className="text-xl md:text-2xl text-zinc-300">
+                  Explora el legado musical de GN'R.
+                </p>
+              </div>
+              <img
+                src="/keep-scrolling.svg"
+                alt="flecha"
+                className="invert mt-12 animate-bounce w-12 opacity-50"
+              />
+            </div>
+          </div>
 
-        {/* --- CONTENIDO PRINCIPAL --- */}
-        <div className="max-w-[1600px] mx-auto px-6 md:px-12 album-grid">
+          {/* Capa de Máscara (Recorte) */}
+          <div
+            ref={logoMaskRef}
+            className="absolute inset-0 z-20 w-full h-full"
+            style={{
+              maskImage: "url('/gsapalbum.png')",
+              WebkitMaskImage: "url('/gsapalbum.png')",
+              maskPosition: "center 40%",
+              WebkitMaskPosition: "center 40%",
+              maskRepeat: "no-repeat",
+              WebkitMaskRepeat: "no-repeat",
+              maskSize: "3000% auto",
+              WebkitMaskSize: "3000% auto",
+            }}
+          >
+            {/* Fondo dentro de la máscara */}
+            <div className="w-full h-full bg-[url(/discografiahero.jpg)] bg-cover bg-position-[center_top_40%] opacity-60" />
+          </div>
+
+          {/* Capa del Logo Real (Aparece al final) */}
+          <div
+            ref={realLogoRef}
+            className="absolute inset-0 z-20 w-full h-full pointer-events-none"
+            style={{
+              backgroundImage: "url('/gsapalbum.png')",
+              backgroundPosition: "center 40%",
+              backgroundRepeat: "no-repeat",
+              backgroundSize: "3000% auto",
+              opacity: 0,
+            }}
+          />
+      </section>
+
+      {/* --- CONTENIDO PRINCIPAL ORIGINAL --- */}
+      {/* Añadimos bg-zinc-950 y z-index para que cubra bien al terminar el scroll */}
+      <main className="relative z-10  pb-20 bg-zinc-950">
             
-            {/* GRID DE ÁLBUMES */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-24 gap-x-12">
+        <div className=" pb-12 text-center">
+            <h1 className="font-gnr text-8xl transition hover:text-yellow-500">Álbumes</h1>
+        </div>
+
+        <div className="max-w-7xl mx-auto px-6 md:px-12">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-20 gap-x-10">
+                
                 {albums.map((album, index) => (
-                    <div key={index} className="album-card flex justify-center">
-                        <VinylCard album={album} index={index} />
+                    <div
+                        key={index}
+                        className="group cursor-default" 
+                    >
+                        <div 
+                            className="relative w-full aspect-square bg-zinc-900 rounded-sm shadow-xl transition-transform duration-300 ease-out group-hover:-translate-y-3"
+                        >
+                            <img 
+                                src={album.portada} 
+                                alt={album.titulo} 
+                                // Nota: Cambié object-portada a object-cover porque 'object-portada' no existe en Tailwind por defecto
+                                className="w-full h-full object-cover rounded-sm shadow-[0_10px_30px_rgba(0,0,0,0.5)]"
+                            />
+                            
+                            <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-5 transition-opacity duration-300 rounded-sm pointer-events-none"></div>
+                            
+                            <div className="absolute inset-0 border border-white/10 rounded-sm pointer-events-none"></div>
+                        </div>
+
+                        <div className="mt-6 text-center px-2">
+                            <h3 className="font-gnr text-3xl text-white mb-2 drop-shadow-md group-hover:text-yellow-500 transition-colors duration-300">
+                                {album.titulo}
+                            </h3>
+                            
+                            <div className="flex justify-center items-center gap-3 mb-4 text-sm">
+                                <span className="text-yellow-500 font-mono tracking-widest">{album.anyo}</span>
+                                <span className="w-1 h-1 bg-zinc-600 rounded-full"></span>
+                                <span className="text-zinc-500 font-serif uppercase tracking-wide">{album.ventas}</span>
+                            </div>
+
+                            <div className="border-t border-zinc-800 pt-3 mx-auto max-w-[90%]">
+                                <ul className="text-zinc-400 font-serif text-sm space-y-1">
+                                    {album.hits.map((hit, i) => (
+                                        <li key={i} className="group-hover:text-zinc-200 transition-colors duration-300">
+                                            {hit}
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        </div>
+
                     </div>
                 ))}
-            </div>
 
-            {/* SECCIÓN ESTADÍSTICAS EXTRA */}
-            <div className="mt-40 border-t border-white/10 pt-20">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-12 text-center">
-                    <div>
-                        <span className="block text-6xl font-gnr text-yellow-500 mb-2">100M+</span>
-                        <span className="text-zinc-400 font-mono text-sm tracking-widest uppercase">Records Sold</span>
-                    </div>
-                    <div>
-                        <span className="block text-6xl font-gnr text-white mb-2">6</span>
-                        <span className="text-zinc-400 font-mono text-sm tracking-widest uppercase">Studio Albums</span>
-                    </div>
-                    <div>
-                        <span className="block text-6xl font-gnr text-yellow-500 mb-2">#1</span>
-                        <span className="text-zinc-400 font-mono text-sm tracking-widest uppercase">Best Selling Debut</span>
-                    </div>
-                </div>
             </div>
+        </div>
 
+        <div className="pt-20 pb-12 text-center">
+            <h1 className="font-gnr text-8xl transition hover:text-yellow-500">Sencillos</h1>
+        </div>
+                <div className="max-w-7xl mx-auto px-6 md:px-12">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-20 gap-x-10">
+                
+                {sencillos.map((sencillo, index) => (
+                    <div
+                        key={index}
+                        className="group cursor-default" 
+                    >
+                        <div 
+                            className="relative w-full aspect-square bg-zinc-900 rounded-sm shadow-xl transition-transform duration-300 ease-out group-hover:-translate-y-3"
+                        >
+                            <img 
+                                src={sencillo.portada} 
+                                alt={sencillo.titulo} 
+                                // Nota: Cambié object-portada a object-cover porque 'object-portada' no existe en Tailwind por defecto
+                                className="w-full h-full object-cover rounded-sm shadow-[0_10px_30px_rgba(0,0,0,0.5)]"
+                            />
+                            
+                            <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-5 transition-opacity duration-300 rounded-sm pointer-events-none"></div>
+                            
+                            <div className="absolute inset-0 border border-white/10 rounded-sm pointer-events-none"></div>
+                        </div>
+
+                        <div className="mt-6 text-center px-2">
+                            <h3 className="font-gnr text-3xl text-white mb-2 drop-shadow-md group-hover:text-yellow-500 transition-colors duration-300">
+                                {sencillo.titulo}
+                            </h3>
+                            
+                            <div className="flex justify-center items-center gap-3 mb-4 text-sm">
+                                <span className="text-yellow-500 font-mono tracking-widest">{sencillo.anyo}</span>
+                            </div>
+
+                        </div>
+
+                    </div>
+                ))}
+
+            </div>
         </div>
       </main>
 

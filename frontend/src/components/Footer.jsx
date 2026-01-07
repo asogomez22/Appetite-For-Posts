@@ -40,9 +40,7 @@ function Footer() {
 
   </div>
 
-  <p className="text-xs md:text-sm mt-8 md:mt-0 text-gray-400">
-    © {new Date().getFullYear()} Diseñado por <a href="https://tarracowebs.com" className="hover:text-yellow-500 transition">TarracoWebs</a>
-  </p>
+
 </footer>
 </div>
   );

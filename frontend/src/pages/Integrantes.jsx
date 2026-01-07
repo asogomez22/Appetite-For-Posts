@@ -81,10 +81,9 @@ const TiltCard = ({ member, index }) => {
       initial={{ opacity: 0, y: 60 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-50px" }}
-      // CAMBIO CLAVE: delay reducido a 0.05 para que sea más rápido
       transition={{ duration: 0.6, delay: index * 0.05, ease: "easeOut" }}
       style={{ perspective: 1200 }} 
-      className="relative h-[480px] w-full z-10"
+      className="relative h-120 w-full z-10"
     >
       <motion.div
         onMouseMove={handleMouseMove}
@@ -96,7 +95,6 @@ const TiltCard = ({ member, index }) => {
         }}
         className="group relative h-full w-full rounded-xl bg-zinc-900 border border-white/10 overflow-hidden shadow-2xl"
       >
-        {/* CAPA 1: IMAGEN DE FONDO */}
         <motion.div 
             style={{ x: bgImageX, y: bgImageY, scale: 1.15 }} 
             className="absolute inset-0 transform-gpu pointer-events-none"
@@ -106,16 +104,14 @@ const TiltCard = ({ member, index }) => {
                 alt={member.name}
                 className="w-full h-full object-cover object-[center_top] grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700"
             />
-             <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent opacity-90 transition-opacity duration-700" />
+             <div className="absolute inset-0 bg-linear-to-t from-black via-black/40 to-transparent opacity-90 transition-opacity duration-700" />
         </motion.div>
 
-        {/* CAPA 2: BRILLO */}
         <motion.div
            style={{ background: highlightGradient, transform: "translateZ(1px)" }}
            className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none mix-blend-overlay z-20 rounded-xl"
         />
         
-        {/* CAPA 3: CONTENIDO FLOTANTE */}
         <motion.div 
             style={{ 
                 x: contentX, 
@@ -125,7 +121,7 @@ const TiltCard = ({ member, index }) => {
             className="absolute inset-0 p-8 flex flex-col justify-end pointer-events-none z-30"
         >
             {member.year && (
-                <div className="absolute right-4 bottom-24 opacity-[0.06] mix-blend-overlay font-gnr text-7xl text-transparent bg-clip-text bg-gradient-to-b from-white to-transparent select-none"
+                <div className="absolute right-43 bottom-26 opacity-[0.6] mix-blend-overlay font-gnr text-7xl text-transparent bg-clip-text bg-linear-to-b from-white to-transparent select-none "
                      style={{ WebkitTextStroke: "1px rgba(255,255,255,0.8)" }}>
                     {member.year.split('-')[0]}
                 </div>
@@ -146,7 +142,6 @@ const TiltCard = ({ member, index }) => {
             </div>
         </motion.div>
 
-         {/* CAPA 4: BORDE */}
          <div className="absolute inset-0 border-2 border-yellow-500/0 group-hover:border-yellow-500/40 transition-all duration-500 rounded-xl z-40 pointer-events-none"></div>
       </motion.div>
     </motion.div>
@@ -250,11 +245,11 @@ function Integrantes() {
               THE LINEUP
             </h1>
             <p className="text-yellow-500 font-mono text-sm tracking-[0.4em] uppercase animate-pulse">
-                World Tour 2025
+              Desliza hacia abajo para explorar
             </p>
           </div>
           
-          <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-zinc-950 to-transparent z-40"></div>
+          <div className="absolute bottom-0 left-0 w-full h-32 bg-linear-to-t from-zinc-950 to-transparent z-40"></div>
         </section>
 
         {/* --- CONTENIDO PRINCIPAL --- */}
@@ -262,15 +257,15 @@ function Integrantes() {
              
             {/* Fondo decorativo */}
             <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none opacity-20">
-                <div className="absolute top-[10%] left-[-10%] w-[500px] h-[500px] bg-red-900 rounded-full blur-[120px]"></div>
-                <div className="absolute bottom-[20%] right-[-10%] w-[600px] h-[600px] bg-yellow-900 rounded-full blur-[120px]"></div>
+                <div className="absolute top-[10%] left-[-10%] w-125 h-125 bg-red-900 rounded-full blur-[120px]"></div>
+                <div className="absolute bottom-[20%] right-[-10%] w-150 h-150 bg-yellow-900 rounded-full blur-[120px]"></div>
             </div>
 
-            <div className="relative max-w-[1400px] mx-auto px-6 md:px-12 pt-20">
+            <div className="relative max-w-350 mx-auto px-6 md:px-12 pt-20">
                 
                 {/* --- SECCIÓN ACTUALES --- */}
                 <div className="text-center mb-16 relative">
-                    <span className="text-yellow-500 font-mono text-xs tracking-[0.3em] uppercase block mb-3">Not In This Lifetime</span>
+                    <span className="text-yellow-500 font-mono text-xs tracking-[0.3em] uppercase block mb-3">Miembros Actuales</span>
                     <h2 className="text-white font-gnr text-6xl md:text-8xl">La Banda</h2>
                     <div className="w-24 h-1 bg-yellow-500 mx-auto mt-6"></div>
                 </div>
@@ -278,7 +273,7 @@ function Integrantes() {
                 {/* CONTAINER ACTUALES - CENTRADO */}
                 <div className="flex flex-wrap justify-center gap-6">
                     {currentMembers.map((member, index) => (
-                        <div key={index} className="w-full md:w-[calc(50%-1.5rem)] lg:w-[calc(33.33%-1.5rem)] xl:w-[calc(25%-1.5rem)] min-w-[280px] max-w-[400px]">
+                        <div key={index} className="w-full md:w-[calc(50%-1.5rem)] lg:w-[calc(33.33%-1.5rem)] xl:w-[calc(25%-1.5rem)] min-w-70 max-w-100">
                             <TiltCard member={member} index={index} />
                         </div>
                     ))}
@@ -286,21 +281,19 @@ function Integrantes() {
 
                 {/* SEPARADOR VISUAL */}
                 <div className="py-32 flex flex-col items-center justify-center opacity-30">
-                     <span className="font-gnr text-4xl text-zinc-500 mb-4">G N R</span>
-                     <div className="h-px w-full max-w-md bg-gradient-to-r from-transparent via-white to-transparent"></div>
+                     <div className="h-px w-full max-w-md bg-linear-to-r from-transparent via-white to-transparent"></div>
                 </div>
 
                 {/* --- SECCIÓN LEYENDAS --- */}
                 <div className="text-center mb-16 relative">
-                    <span className="text-zinc-500 font-mono text-xs tracking-[0.3em] uppercase block mb-3">Legacy & History</span>
-                    <h2 className="text-zinc-300 font-gnr text-6xl md:text-7xl">Leyendas</h2>
+                    <span className="text-zinc-500 font-mono text-xs tracking-[0.3em] uppercase block mb-3">Miembros que ya no forman parte de GN'R</span>
+                    <h2 className="text-zinc-300 font-gnr text-6xl md:text-7xl">Miembros Anteriores</h2>
                 </div>
 
                 {/* CONTAINER CLÁSICOS - CENTRADO Y REINICIO DE INDEX */}
                 <div className="flex flex-wrap justify-center gap-6">
                     {classicMembers.map((member, index) => (
-                        <div key={index} className="w-full md:w-[calc(50%-1.5rem)] lg:w-[calc(33.33%-1.5rem)] xl:w-[calc(25%-1.5rem)] min-w-[280px] max-w-[400px]">
-                            {/* CAMBIO CLAVE: Pasamos index={index} (no index+8) para reiniciar el delay */}
+                        <div key={index} className="w-full md:w-[calc(50%-1.5rem)] lg:w-[calc(33.33%-1.5rem)] xl:w-[calc(25%-1.5rem)] min-w-70 max-w-100">
                             <TiltCard member={member} index={index} />
                         </div>
                     ))}

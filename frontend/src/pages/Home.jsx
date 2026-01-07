@@ -229,7 +229,7 @@ function Home() {
                   </p>
 
                   <a
-                    href="/articulos"
+                    href="/sobregnr"
                     className="group relative inline-flex items-center justify-center px-8 py-4 font-bold text-white transition-all duration-500 bg-zinc-900 font-pj rounded-xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 border border-white/10 hover:bg-white hover:text-black overflow-hidden"
                   >
                     <span className="relative z-10 uppercase tracking-widest text-sm">Ver más sobre la banda</span>
