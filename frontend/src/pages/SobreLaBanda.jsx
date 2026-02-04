@@ -29,7 +29,6 @@ function SobreLaBanda() {
             const initialSize = "3000% auto";
             const finalSize = "35% auto";
 
-            // 1. Animación de la Máscara (El recorte de la imagen de fondo)
             tl.fromTo(logoMaskRef.current,
                 { maskSize: initialSize, webkitMaskSize: initialSize },
                 {
@@ -41,7 +40,6 @@ function SobreLaBanda() {
                 0
             );
 
-            // 2. Animación del Logo Real (Sincronizado)
             tl.fromTo(realLogoRef.current,
                 { backgroundSize: initialSize },
                 {
@@ -52,7 +50,6 @@ function SobreLaBanda() {
                 0
             );
 
-            // 3. Aparición gradual del Logo Real al final
             tl.fromTo(realLogoRef.current,
                 { opacity: 0 },
                 {
@@ -63,7 +60,6 @@ function SobreLaBanda() {
                 0.7
             );
 
-            // 4. Desvanecimiento del texto principal
             tl.to(textRef.current, {
                 opacity: 0,
                 y: -50,
@@ -82,17 +78,15 @@ function SobreLaBanda() {
             <Navbar />
             <main className="bg-[#161515ff] overflow-x-hidden">
                 
-                {/* --- SECCIÓN HERO CON ANIMACIÓN --- */}
                 <section
                     ref={heroRef}
                     className="relative w-full h-screen overflow-hidden flex items-center justify-center bg-black"
                 >
-                    {/* CAPA 1: MÁSCARA (Imagen de fondo recortada por el logo) */}
                     <div
                         ref={logoMaskRef}
                         className="absolute inset-0 z-10 w-full h-full bg-cover bg-center"
                         style={{
-                            backgroundImage: "url('https://www.rockfm.fm/files/og_thumbnail/uploads/2025/05/23/68308601dd996.jpeg')",
+                            backgroundImage: "url('https://www.rockfm.fm/files/og_thumbnail/uploads/2025/05/23/68308601dd 996.jpeg')",
                             maskImage: "url('/logo.png')",
                             WebkitMaskImage: "url('/logo.png')",
                             maskPosition: "center center",
@@ -101,11 +95,9 @@ function SobreLaBanda() {
                             WebkitMaskRepeat: "no-repeat",
                         }}
                     >
-                        {/* Overlay oscuro para legibilidad */}
                         <div className="w-full h-full bg-black/40"></div>
                     </div>
 
-                    {/* CAPA 2: EL LOGO REAL (Se vuelve visible al final) */}
                     <div
                         ref={realLogoRef}
                         className="absolute inset-0 z-20 w-full h-full pointer-events-none"
@@ -117,7 +109,6 @@ function SobreLaBanda() {
                         }}
                     />
 
-                    {/* CAPA 3: TEXTO E INDICADOR SCROLL */}
                     <div
                         ref={textRef}
                         className="absolute z-30 flex flex-col items-center justify-center text-center px-4 pointer-events-none"
@@ -133,11 +124,9 @@ function SobreLaBanda() {
                         />
                     </div>
 
-                    {/* Gradiente de salida al final de la sección */}
                     <div className="absolute bottom-0 left-0 w-full h-32 bg-linear-to-t from-[#161515ff] to-transparent z-40"></div>
                 </section>
 
-                {/* --- SECCIÓN SIGUIENTE (Contenido de la discografía/miembros) --- */}
                 <section className="h-screen flex items-center justify-center">
                     <h2 className="text-white text-4xl font-gnr">Aquí comienza la discograf...</h2>
                 </section>

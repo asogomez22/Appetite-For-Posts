@@ -97,7 +97,7 @@ function Discografia() {
         scrollTrigger: {
           trigger: heroRef.current,
           start: "top top",
-          end: "+=150%", // Duración del scroll
+          end: "+=150%",
           scrub: 1,
           pin: true,
           anticipatePin: 1,
@@ -107,7 +107,6 @@ function Discografia() {
       const initialSize = "3000% auto";
       const finalSize = "50% auto";
 
-      // 1. Animación de la máscara (Zoom out)
       tl.fromTo(
         [logoMaskRef.current, realLogoRef.current],
         {
@@ -125,7 +124,6 @@ function Discografia() {
         0
       );
 
-      // 2. Aparece el logo real
       tl.fromTo(
         realLogoRef.current,
         { opacity: 0 },
@@ -137,7 +135,6 @@ function Discografia() {
         0.6
       );
 
-      // 3. El texto desaparece al hacer scroll
       tl.to(
         textRef.current,
         {
@@ -163,7 +160,6 @@ function Discografia() {
           ref={heroRef}
           className="relative w-full h-screen flex items-center justify-center bg-zinc-950 z-0"
         >
-          {/* Texto Central */}
           <div
             ref={textRef}
             className="relative z-30 text-center pointer-events-none w-full transform translate-y-10"
@@ -185,7 +181,6 @@ function Discografia() {
             </div>
           </div>
 
-          {/* Capa de Máscara (Recorte) */}
           <div
             ref={logoMaskRef}
             className="absolute inset-0 z-20 w-full h-full"
@@ -200,11 +195,9 @@ function Discografia() {
               WebkitMaskSize: "3000% auto",
             }}
           >
-            {/* Fondo dentro de la máscara */}
             <div className="w-full h-full bg-[url(/discografiahero.jpg)] bg-cover bg-position-[center_top_40%] opacity-60" />
           </div>
 
-          {/* Capa del Logo Real (Aparece al final) */}
           <div
             ref={realLogoRef}
             className="absolute inset-0 z-20 w-full h-full pointer-events-none"
@@ -218,8 +211,6 @@ function Discografia() {
           />
       </section>
 
-      {/* --- CONTENIDO PRINCIPAL ORIGINAL --- */}
-      {/* Añadimos bg-zinc-950 y z-index para que cubra bien al terminar el scroll */}
       <main className="relative z-10  pb-20 bg-zinc-950">
             
         <div className=" pb-12 text-center">
@@ -240,7 +231,6 @@ function Discografia() {
                             <img 
                                 src={album.portada} 
                                 alt={album.titulo} 
-                                // Nota: Cambié object-portada a object-cover porque 'object-portada' no existe en Tailwind por defecto
                                 className="w-full h-full object-cover rounded-sm shadow-[0_10px_30px_rgba(0,0,0,0.5)]"
                             />
                             
@@ -294,7 +284,6 @@ function Discografia() {
                             <img 
                                 src={sencillo.portada} 
                                 alt={sencillo.titulo} 
-                                // Nota: Cambié object-portada a object-cover porque 'object-portada' no existe en Tailwind por defecto
                                 className="w-full h-full object-cover rounded-sm shadow-[0_10px_30px_rgba(0,0,0,0.5)]"
                             />
                             

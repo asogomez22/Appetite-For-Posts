@@ -10,7 +10,7 @@ function Hero({nombre = 'Appetite for Posts'}) {
             <h1 className="mt-5 text-7xl sm:text-8xl md:text-9xl lg:text-[200px] font-gnr text-yellow-500 ">
             {nombre}
             </h1>
-                          <img
+              <img
                 src="/keep-scrolling.svg"
                 alt="flecha"
                 className="invert mt-12 animate-bounce w-12"

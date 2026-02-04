@@ -11,7 +11,6 @@ function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Asegúrate de que el bloque return comience exactamente aquí, sin comillas antes
   return (
     <header
       className={`fixed top-0 left-0 w-full h-24 flex justify-between items-center px-4 sm:px-10 font-gnr transition-colors duration-500 z-50 text-white ${

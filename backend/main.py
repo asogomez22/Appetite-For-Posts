@@ -34,7 +34,6 @@ def get_db():
 def root():
     return 'Holaa'
 
-# DECORADORES USUARIOS
 
 @app.get('/api/users/', response_model=list[UserId])
 def get_users(db: Session = Depends(get_db)):
@@ -55,7 +54,6 @@ def create_user(user: UserData, db: Session = Depends(get_db)):
     return crud.create_user(db = db, user=user)
 
 
-# DECORADORES ARTICULOS
 
 @app.get('/api/articles/', response_model=list[ArticleId])
 def get_articles(db: Session = Depends(get_db)):
@@ -63,7 +61,6 @@ def get_articles(db: Session = Depends(get_db)):
 
 @app.get('/api/articles/{id:int}' , response_model=ArticleId)
 def get_article(id, db: Session = Depends(get_db)):
-    # Corregido el error tipográfico ":8" que tenías aquí
     article_by_id = crud.get_article_by_id(db = db, id = id)
     if article_by_id:
         return article_by_id
@@ -76,14 +73,12 @@ def create_article(article: ArticleData, db: Session = Depends(get_db)):
         raise HTTPException(status_code=400, detail='Title already exist.')
     return crud.create_article(db = db, article=article)
 
-# --- NUEVO ENDPOINT PARA EDITAR ---
 @app.put('/api/articles/{id}', response_model=ArticleId)
 def update_article(id: int, article: ArticleData, db: Session = Depends(get_db)):
     updated_article = crud.update_article(db=db, id=id, article=article)
     if updated_article is None:
         raise HTTPException(status_code=404, detail="Article not found")
     return updated_article
-# ----------------------------------
 
 @app.delete("/api/articles/{article_id}", response_model=ArticleId)
 def delete_article(article_id: int, db: Session = Depends(get_db)):

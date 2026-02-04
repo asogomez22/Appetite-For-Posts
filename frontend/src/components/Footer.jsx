@@ -24,7 +24,7 @@ function Footer() {
 
 
     <div className="w-24 md:w-auto md:basis-1/9 shrink-0 my-4 md:my-0">
-      <img src="/logo.png" alt="Logo" className="w-full h-auto object-contain"/>
+      <img src="/logo.png" alt="Logo" className="w-full h-auto object-contain transition hover:scale-110"/>
     </div>
 
     <div className="flex-1 w-full md:w-auto">

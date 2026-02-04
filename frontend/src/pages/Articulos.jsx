@@ -9,7 +9,6 @@ import { useEffect, useState } from "react";
 function Articulo() {
   const [articles, setArticles] = useState([]);
 
-  // Fetch inicial
   useEffect(() => {
     fetch("http://localhost:8000/api/articles/")
       .then((res) => res.json())
@@ -17,7 +16,6 @@ function Articulo() {
       .catch((err) => console.error(err));
   }, []);
 
-  // WebSocket para tiempo real
   useEffect(() => {
     const ws = new WebSocket("ws://localhost:8000/ws/articles");
     ws.onmessage = (event) => {

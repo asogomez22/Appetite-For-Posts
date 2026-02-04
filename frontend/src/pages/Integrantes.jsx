@@ -7,7 +7,6 @@ import { motion, useMotionTemplate, useMotionValue, useSpring, useTransform } fr
 
 gsap.registerPlugin(ScrollTrigger);
 
-// --- DATOS ---
 const currentMembers = [
   { name: "Axl Rose", role: "Voz & Piano", img: "/axl.jpg", year: "1985" },
   { name: "Slash", role: "Guitarra Líder", img: "/slash.jpg", year: "1985" },
@@ -31,7 +30,6 @@ const classicMembers = [
   { name: "Tommy Stinson", role: "Bajo", img: "/tommy.jpg", year: "1997 - 2014" },
 ];
 
-// --- ATMÓSFERA GRANO ---
 const GrainAtmosphere = () => (
     <div className="fixed inset-0 z-0 pointer-events-none mix-blend-overlay opacity-[0.15]">
         <svg className="w-full h-full">
@@ -43,7 +41,6 @@ const GrainAtmosphere = () => (
     </div>
 );
 
-// --- COMPONENTE: 3D PRO CARD ---
 const TiltCard = ({ member, index }) => {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
@@ -121,9 +118,9 @@ const TiltCard = ({ member, index }) => {
             className="absolute inset-0 p-8 flex flex-col justify-end pointer-events-none z-30"
         >
             {member.year && (
-                <div className="absolute right-43 bottom-26 opacity-[0.6] mix-blend-overlay font-gnr text-7xl text-transparent bg-clip-text bg-linear-to-b from-white to-transparent select-none "
+                <div className="absolute right-10 bottom-28 opacity-[0.6] mix-blend-overlay font-gnr text-6xl text-transparent bg-clip-text bg-linear-to-b from-white to-transparent select-none w-55"
                      style={{ WebkitTextStroke: "1px rgba(255,255,255,0.8)" }}>
-                    {member.year.split('-')[0]}
+                    {member.year}
                 </div>
             )}
             
@@ -205,7 +202,6 @@ function Integrantes() {
       
       <main className="relative z-10">
         
-        {/* --- HERO SECTION --- */}
         <section
           ref={heroRef}
           className="relative w-full h-screen overflow-hidden flex items-center justify-center bg-zinc-900"
@@ -239,23 +235,26 @@ function Integrantes() {
 
           <div
             ref={textRef}
-            className="absolute z-30 flex flex-col items-center justify-center text-center px-4 pointer-events-none"
+            className="absolute z-50 flex flex-col items-center justify-center text-center px-4 pointer-events-none mt-10"
           >
-             <h1 className="font-gnr text-6xl md:text-9xl text-white transition hover:text-yellow-500 drop-shadow-2xl mb-4">
-              THE LINEUP
+             <h1 className="font-gnr text-6xl md:text-9xl text-white transition hover:text-yellow-500 drop-shadow-2xl mb-4 anima">
+              ALINEACIÓN
             </h1>
             <p className="text-yellow-500 font-mono text-sm tracking-[0.4em] uppercase animate-pulse">
               Desliza hacia abajo para explorar
             </p>
+              <img
+                src="/keep-scrolling.svg"
+                alt="flecha"
+                className="invert mt-12 animate-bounce w-12"
+              />
           </div>
           
           <div className="absolute bottom-0 left-0 w-full h-32 bg-linear-to-t from-zinc-950 to-transparent z-40"></div>
         </section>
 
-        {/* --- CONTENIDO PRINCIPAL --- */}
         <div className="relative z-40 bg-zinc-950 pb-32">
              
-            {/* Fondo decorativo */}
             <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none opacity-20">
                 <div className="absolute top-[10%] left-[-10%] w-125 h-125 bg-red-900 rounded-full blur-[120px]"></div>
                 <div className="absolute bottom-[20%] right-[-10%] w-150 h-150 bg-yellow-900 rounded-full blur-[120px]"></div>
@@ -263,14 +262,12 @@ function Integrantes() {
 
             <div className="relative max-w-350 mx-auto px-6 md:px-12 pt-20">
                 
-                {/* --- SECCIÓN ACTUALES --- */}
                 <div className="text-center mb-16 relative">
                     <span className="text-yellow-500 font-mono text-xs tracking-[0.3em] uppercase block mb-3">Miembros Actuales</span>
                     <h2 className="text-white font-gnr text-6xl md:text-8xl">La Banda</h2>
                     <div className="w-24 h-1 bg-yellow-500 mx-auto mt-6"></div>
                 </div>
 
-                {/* CONTAINER ACTUALES - CENTRADO */}
                 <div className="flex flex-wrap justify-center gap-6">
                     {currentMembers.map((member, index) => (
                         <div key={index} className="w-full md:w-[calc(50%-1.5rem)] lg:w-[calc(33.33%-1.5rem)] xl:w-[calc(25%-1.5rem)] min-w-70 max-w-100">
@@ -279,18 +276,15 @@ function Integrantes() {
                     ))}
                 </div>
 
-                {/* SEPARADOR VISUAL */}
                 <div className="py-32 flex flex-col items-center justify-center opacity-30">
                      <div className="h-px w-full max-w-md bg-linear-to-r from-transparent via-white to-transparent"></div>
                 </div>
 
-                {/* --- SECCIÓN LEYENDAS --- */}
                 <div className="text-center mb-16 relative">
                     <span className="text-zinc-500 font-mono text-xs tracking-[0.3em] uppercase block mb-3">Miembros que ya no forman parte de GN'R</span>
                     <h2 className="text-zinc-300 font-gnr text-6xl md:text-7xl">Miembros Anteriores</h2>
                 </div>
 
-                {/* CONTAINER CLÁSICOS - CENTRADO Y REINICIO DE INDEX */}
                 <div className="flex flex-wrap justify-center gap-6">
                     {classicMembers.map((member, index) => (
                         <div key={index} className="w-full md:w-[calc(50%-1.5rem)] lg:w-[calc(33.33%-1.5rem)] xl:w-[calc(25%-1.5rem)] min-w-70 max-w-100">
@@ -302,7 +296,7 @@ function Integrantes() {
             </div>
         </div>
 
-        <Footer />
+        <Footer /> 
       </main>
     </div>
   );

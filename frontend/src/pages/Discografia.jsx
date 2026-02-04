@@ -10,9 +10,8 @@ import { useEffect, useState } from "react";
 function Discografia() {
 
     const [articles, setArticles] = useState([]);
-  const [search, setSearch] = useState("");
+    const [search, setSearch] = useState("");
   
-    // Fetch inicial
     useEffect(() => {
       fetch("http://localhost:8000/api/articles/")
         .then((res) => res.json())
@@ -20,7 +19,6 @@ function Discografia() {
         .catch((err) => console.error(err));
     }, []);
   
-    // WebSocket para tiempo real
     useEffect(() => {
       const ws = new WebSocket("ws://localhost:8000/ws/articles");
       ws.onmessage = (event) => {

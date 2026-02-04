@@ -1,4 +1,4 @@
-import Navbar from "../components/NavbarHero"
+import Navbar from "../components/Navbar"
 import Footer from "../components/Footer"
 import SeccionDeArticulo from "../components/SeccionDeArticuloConBuscador"
 import ArticleCard from '../components/ArticleCard';
@@ -10,23 +10,11 @@ function Noticias() {
   const [articles, setArticles] = useState([]);
   const [search, setSearch] = useState("");
   
-  // Fetch inicial
   useEffect(() => {
     fetch("http://localhost:8000/api/articles/")
       .then((res) => res.json())
       .then((data) => setArticles(data))
       .catch((err) => console.error(err));
-  }, []);
-  
-  // WebSocket para tiempo real
-  useEffect(() => {
-    // Asegúrate de que tu backend soporte WS en esta ruta, si no, puedes quitar este useEffect
-    const ws = new WebSocket("ws://localhost:8000/ws/articles");
-    ws.onmessage = (event) => {
-      const newArticle = JSON.parse(event.data);
-      setArticles((prev) => [...prev, newArticle]);
-    };
-    return () => ws.close();
   }, []);
   
 
@@ -50,8 +38,8 @@ function Noticias() {
             .sort((a, b) => b.id - a.id)
             .map((article) => (
               <ArticleCard 
-                key={article.id}          // Para uso interno de React
-                id={article.id}           // <--- CORRECCIÓN AQUÍ: Pasamos el ID como prop
+                key={article.id}          
+                id={article.id}           
                 titulo={article.title} 
                 descripcion={article.description} 
                 img={article.img} 
