@@ -31,7 +31,3 @@ Proyecto **fullstack** sobre **Guns N Roses**: frontend en **React (Vite)** y ba
   - Crear, listar y consultar
   - Editar y borrar artículos
 
----
-
-## Estructura del repositorio
-
