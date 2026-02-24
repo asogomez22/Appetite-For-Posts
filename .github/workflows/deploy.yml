@@ -18,7 +18,7 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.SSH_PORT }}
           source: "."
-          target: "/srv/appetiteforposts"
+          target: "/home/deploy/apps/appetiteforposts"
           rm: true
 
       - name: Build & run on VPS
