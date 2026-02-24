@@ -1,13 +1,10 @@
-const flowbiteReact = require("flowbite-react/plugin/tailwindcss");
-
-// tailwind.config.js
-module.exports = {
-  // 1. Añade las rutas de Flowbite al content array
+/** @type {import('tailwindcss').Config} */
+export default {
   content: [
     "./index.html",
-    "./src/**/*.{js,jsx}",
-    "node_modules/flowbite-react/**/*.{js,jsx,ts,tsx}",
-    "node_modules/flowbite/**/*.{js,jsx,ts,tsx}",
+    "./src/**/*.{js,jsx,ts,tsx}",
+    "./node_modules/flowbite-react/**/*.{js,jsx,ts,tsx}",
+    "./node_modules/flowbite/**/*.{js,jsx,ts,tsx}",
     ".flowbite-react\\class-list.json"
   ],
   theme: {
@@ -17,10 +14,8 @@ module.exports = {
       },
     },
   },
-  // 2. Añade el plugin de Flowbite aquí
   plugins: [
     require('@tailwindcss/typography'),
     require('flowbite/plugin'),
-    flowbiteReact
   ],
-}
+};
