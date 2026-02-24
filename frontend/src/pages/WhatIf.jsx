@@ -13,14 +13,14 @@ function WhatIf() {
   const [search, setSearch] = useState("");
   
     useEffect(() => {
-      fetch("http://localhost:8000/api/articles/")
+      fetch("https://appetiteforposts.com/api/articles/")
         .then((res) => res.json())
         .then((data) => setArticles(data))
         .catch((err) => console.error(err));
     }, []);
   
     useEffect(() => {
-      const ws = new WebSocket("ws://localhost:8000/ws/articles");
+      const ws = new WebSocket("wss://appetiteforposts.com/ws/articles");
       ws.onmessage = (event) => {
         const newArticle = JSON.parse(event.data);
         setArticles((prev) => [...prev, newArticle]);

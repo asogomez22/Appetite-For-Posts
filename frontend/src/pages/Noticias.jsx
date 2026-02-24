@@ -11,7 +11,7 @@ function Noticias() {
   const [search, setSearch] = useState("");
   
   useEffect(() => {
-    fetch("http://localhost:8000/api/articles/")
+    fetch("https://appetiteforposts.com/api/articles/")
       .then((res) => res.json())
       .then((data) => setArticles(data))
       .catch((err) => console.error(err));

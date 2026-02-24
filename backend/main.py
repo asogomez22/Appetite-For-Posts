@@ -12,7 +12,8 @@ Base.metadata.create_all(bind = engine)
 app = FastAPI()
 
 origin = [
-    'http://localhost:5173'
+    'http://localhost:5173',
+    'https://appetiteforposts.com'
 ]
 
 app.add_middleware(

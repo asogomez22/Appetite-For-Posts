@@ -40,4 +40,4 @@ networks:
   appetite_net:
 
 volumes:
-  appetite_db
+  appetite_db:

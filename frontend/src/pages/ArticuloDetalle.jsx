@@ -11,7 +11,7 @@ function DetalleArticulo() {
   const [article, setArticle] = useState(null);
 
   useEffect(() => {
-    fetch(`http://localhost:8000/api/articles/${id}`)
+    fetch(`https://appetiteforposts.com/api/articles/${id}`)
       .then((res) => res.json())
       .then((data) => setArticle(data))
       .catch((err) => console.error(err));
