@@ -22,7 +22,7 @@ services:
     depends_on:
       - db
     ports:
-      - "172.16.0.1:8087:8000"
+      - "172.17.0.1:8087:8000"
     networks:
       - appetite_net
 
@@ -32,7 +32,7 @@ services:
     depends_on:
       - backend
     ports:
-      - "172.16.0.1:8086:80"
+      - "172.17.0.1:8086:80"
     networks:
       - appetite_net
 
