@@ -1,17 +1,4 @@
 services:
-  nginx-proxy-manager:
-    image: 'jc21/nginx-proxy-manager:latest'
-    restart: unless-stopped
-    ports:
-      - '80:80'
-      - '81:81'
-      - '443:443'
-    volumes:
-      - ./npm/data:/data
-      - ./npm/letsencrypt:/etc/letsencrypt
-    networks:
-      - appetite_net
-
   db:
     image: postgres:16
     environment:
@@ -34,22 +21,23 @@ services:
       DB_PASSWORD: change_me
     depends_on:
       - db
+    ports:
+      - "127.0.0.1:8087:8000"
     networks:
       - appetite_net
-    # El puerto 8087 ya no es estrictamente necesario exponerlo al host
 
   frontend:
     build:
       context: ./frontend
     depends_on:
       - backend
+    ports:
+      - "127.0.0.1:8086:80"
     networks:
       - appetite_net
-    # El puerto 8086 ya no es estrictamente necesario exponerlo al host
 
 networks:
   appetite_net:
-    external: false
 
 volumes:
-  appetite_db:
+  appetite_db
