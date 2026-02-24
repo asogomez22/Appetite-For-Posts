@@ -7,25 +7,34 @@ services:
       POSTGRES_PASSWORD: change_me
     volumes:
       - appetite_db:/var/lib/postgresql/data
-    networks: [appetite_net]
+    networks:
+      - appetite_net
 
   backend:
     build:
       context: ./backend
     environment:
-      DATABASE_URL: postgresql://appetite:change_me@db:5432/appetite
-      # Ajusta lo que necesite tu FastAPI (CORS, SECRET_KEY, etc.)
-    depends_on: [db]
-    networks: [appetite_net]
+      DB_DIALECT: postgresql
+      DB_HOST: db
+      DB_NAME: appetite
+      DB_USER: appetite
+      DB_PASSWORD: change_me
+    depends_on:
+      - db
+    ports:
+      - "127.0.0.1:8087:8000"
+    networks:
+      - appetite_net
 
   frontend:
     build:
       context: ./frontend
-    depends_on: [backend]
-    # Publicado SOLO en localhost (el proxy será quien lo exponga)
+    depends_on:
+      - backend
     ports:
       - "127.0.0.1:8086:80"
-    networks: [appetite_net]
+    networks:
+      - appetite_net
 
 networks:
   appetite_net:
