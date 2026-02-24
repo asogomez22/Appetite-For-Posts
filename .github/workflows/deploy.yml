@@ -30,6 +30,6 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           script: |
             set -e
-            cd /srv/appetiteforposts
+            cd /home/deploy/apps/appetiteforposts
             docker compose -f docker-compose.prod.yml up -d --build
             docker image prune -f
