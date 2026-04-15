@@ -3,9 +3,9 @@ services:
     image: postgres:16
     restart: unless-stopped
     environment:
-      POSTGRES_DB: appetite
-      POSTGRES_USER: appetite
-      POSTGRES_PASSWORD: change_me
+      POSTGRES_DB: ${POSTGRES_DB:-appetite}
+      POSTGRES_USER: ${POSTGRES_USER:-appetite}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-change_me}
     volumes:
       - appetite_db:/var/lib/postgresql/data
     healthcheck:
@@ -22,11 +22,15 @@ services:
       context: ./backend
     restart: unless-stopped
     environment:
-      DB_DIALECT: postgresql
-      DB_HOST: db
-      DB_NAME: appetite
-      DB_USER: appetite
-      DB_PASSWORD: change_me
+      ENVIRONMENT: ${ENVIRONMENT:-production}
+      CORS_ORIGINS: ${CORS_ORIGINS:-https://appetiteforposts.com,https://www.appetiteforposts.com}
+      AUTH_SECRET: ${AUTH_SECRET:-change-this-auth-secret-in-production}
+      AUTH_TOKEN_TTL_SECONDS: ${AUTH_TOKEN_TTL_SECONDS:-43200}
+      DB_DIALECT: ${DB_DIALECT:-postgresql}
+      DB_HOST: ${DB_HOST:-db}
+      DB_NAME: ${DB_NAME:-${POSTGRES_DB:-appetite}}
+      DB_USER: ${DB_USER:-${POSTGRES_USER:-appetite}}
+      DB_PASSWORD: ${DB_PASSWORD:-${POSTGRES_PASSWORD:-change_me}}
     depends_on:
       db:
         condition: service_healthy
