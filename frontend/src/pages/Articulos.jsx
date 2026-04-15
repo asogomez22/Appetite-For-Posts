@@ -5,24 +5,22 @@ import SeccionDeArticulo from "../components/SeccionDeArticulo";
 import ArticleCard from "../components/ArticleCard";
 import Hero from "../components/Hero";
 import { useEffect, useState } from "react";
+import { fetchArticles, subscribeToArticles } from "../lib/articles";
 
 function Articulo() {
   const [articles, setArticles] = useState([]);
 
   useEffect(() => {
-    fetch("https://appetiteforposts.com/api/articles/")
-      .then((res) => res.json())
+    fetchArticles()
       .then((data) => setArticles(data))
       .catch((err) => console.error(err));
   }, []);
 
   useEffect(() => {
-    const ws = new WebSocket("wss://appetiteforposts.com/ws/articles");
-    ws.onmessage = (event) => {
-      const newArticle = JSON.parse(event.data);
-      setArticles((prev) => [...prev, newArticle]);
-    };
-    return () => ws.close();
+    return subscribeToArticles(
+      (newArticle) => setArticles((prev) => [...prev, newArticle]),
+      (err) => console.error(err)
+    );
   }, []);
 
   return (

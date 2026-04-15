@@ -4,6 +4,7 @@ import SeccionDeArticulo from "../components/SeccionDeArticuloConBuscador"
 import ArticleCard from '../components/ArticleCard';
 import Hero from "../components/Hero";
 import { useEffect, useState } from "react";
+import { fetchArticles } from "../lib/articles";
 
 function Noticias() {
 
@@ -11,8 +12,7 @@ function Noticias() {
   const [search, setSearch] = useState("");
   
   useEffect(() => {
-    fetch("https://appetiteforposts.com/api/articles/")
-      .then((res) => res.json())
+    fetchArticles()
       .then((data) => setArticles(data))
       .catch((err) => console.error(err));
   }, []);

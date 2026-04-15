@@ -1,21 +1,19 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import './App.css'
+import './App.css';
 import Home from './pages/Home';
 import Contacto from './pages/Contacto';
 import Articulo from './pages/Articulos';
 import Noticias from './pages/Noticias';
-import WhatIf from './pages/WhatIf'; 
+import WhatIf from './pages/WhatIf';
 import Discografia from './pages/Discografia';
 import Entrevistas from './pages/Entrevistas';
 import DetalleArticulo from './pages/ArticuloDetalle';
 import SobreLaBanda from './pages/Formacion';
 import Integrantes from './pages/Integrantes';
 import Albumes from './pages/Albumes';
+import AdminArticulos from './pages/AdminArticulos';
 
- 
 function App() {
-
-  
   return (
     <>
       <main>
@@ -28,14 +26,14 @@ function App() {
             <Route path="/whatif" element={<WhatIf />} />
             <Route path="/discografia" element={<Discografia />} />
             <Route path="/entrevistas" element={<Entrevistas />} />
-            <Route path="/articulo/:id" element={<DetalleArticulo />} />         
-            <Route path="/sobregnr" element={<SobreLaBanda />} />   
-            <Route path="/integrantes" element={<Integrantes />} />               
-            <Route path="/albumes" element={<Albumes />} />               
+            <Route path="/articulo/:id" element={<DetalleArticulo />} />
+            <Route path="/sobregnr" element={<SobreLaBanda />} />
+            <Route path="/integrantes" element={<Integrantes />} />
+            <Route path="/albumes" element={<Albumes />} />
+            <Route path="/admin/articulos" element={<AdminArticulos />} />
           </Routes>
         </Router>
       </main>
-
     </>
   );
 }
