@@ -1,18 +1,18 @@
-import { useParams, Link } from "react-router-dom"; 
+import { useParams, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar2";
 import Footer from "../components/Footer";
 import ReactMarkdown from "react-markdown";
 import { motion } from "framer-motion";
 import PageContainer from "../components/PageContainer";
+import { fetchArticleById } from "../lib/articles";
 
 function DetalleArticulo() {
   const { id } = useParams();
   const [article, setArticle] = useState(null);
 
   useEffect(() => {
-    fetch(`https://appetiteforposts.com/api/articles/${id}`)
-      .then((res) => res.json())
+    fetchArticleById(id)
       .then((data) => setArticle(data))
       .catch((err) => console.error(err));
   }, [id]);
@@ -20,11 +20,14 @@ function DetalleArticulo() {
   if (!article)
     return (
       <div className="min-h-screen flex items-center justify-center bg-[#161515ff] text-white">
-        <p className="animate-pulse text-xl">Cargando artículo...</p>
+        <p className="animate-pulse text-xl">Cargando articulo...</p>
       </div>
     );
 
-  const processedContent = article.body.replace(
+  const articleBody = article.body || "";
+  const heroImage = article.img || "/hero.jpg";
+  const articleDescription = article.description || "Articulo";
+  const processedContent = articleBody.replace(
     /\[\[(.*?)\]\]/g,
     "[$1](__custom_span)"
   );
@@ -34,11 +37,9 @@ function DetalleArticulo() {
       <Navbar />
       <PageContainer>
         <div className="bg-[#161515ff] min-h-screen pb-20">
-          
-          
           <section
             className="relative w-full h-[60vh] md:h-screen bg-cover bg-center bg-no-repeat"
-            style={{ backgroundImage: `url('${article.img}')` }}
+            style={{ backgroundImage: `url('${heroImage}')` }}
           >
             <div className="absolute inset-0 bg-linear-to-t from-[#161515ff] via-[#161515ff]/40 to-transparent"></div>
 
@@ -64,7 +65,7 @@ function DetalleArticulo() {
                       key={i}
                       className="tracking-wide text-xl md:text-4xl font-black px-4 md:px-8 flex items-center gap-4 uppercase"
                     >
-                      {article.description} •
+                      {articleDescription} �
                     </span>
                   ))}
                 </div>
@@ -95,10 +96,10 @@ function DetalleArticulo() {
                     />
                   ),
                   img: ({ node, ...props }) => (
-                    <img 
-                       className="rounded-xl shadow-lg border border-gray-700 my-6 w-full"
-                       loading="lazy"
-                       {...props} 
+                    <img
+                      className="rounded-xl shadow-lg border border-gray-700 my-6 w-full"
+                      loading="lazy"
+                      {...props}
                     />
                   ),
                   blockquote: ({ node, ...props }) => (
@@ -131,11 +132,11 @@ function DetalleArticulo() {
             </div>
 
             <div className="mt-16 mb-8 w-full flex justify-center">
-              <Link 
+              <Link
                 to="/articulos"
                 className="group relative inline-flex items-center justify-center px-8 py-4 font-bold text-black transition-all duration-200 bg-yellow-500 font-pj rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 border-2 border-yellow-500 hover:bg-transparent hover:text-yellow-500 w-full sm:w-auto text-center"
               >
-                Leer más posts
+                Leer mas posts
               </Link>
             </div>
           </div>

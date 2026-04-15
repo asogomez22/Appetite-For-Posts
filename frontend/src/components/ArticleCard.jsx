@@ -1,15 +1,17 @@
 import { Link } from "react-router-dom";
 
 function ArticleCard({ titulo, descripcion, img, id }) {
+  const imageSrc = img || "/logo.png";
+
   return (
     <article className="group relative flex flex-col h-full w-full bg-zinc-900/50 backdrop-blur-sm border border-zinc-800 rounded-xl overflow-hidden transition-all duration-500 hover:border-yellow-500/50 hover:-translate-y-1 sm:hover:-translate-y-2 shadow-xl hover:shadow-2xl">
       
       <div className="relative h-48 sm:h-52 w-full overflow-hidden shrink-0">
         <div className="absolute inset-0 bg-black/20 z-10 group-hover:bg-transparent transition-colors duration-500" />
-        <img 
-          src={img} 
-          alt={titulo} 
-          className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"  
+        <img
+          src={imageSrc}
+          alt={titulo}
+          className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
           loading="lazy"
         />
       </div>
@@ -18,7 +20,7 @@ function ArticleCard({ titulo, descripcion, img, id }) {
         <h3 className="text-lg sm:text-xl font-bold text-white mb-2 sm:mb-3 leading-tight group-hover:text-yellow-500 transition-colors duration-300 line-clamp-2 uppercase tracking-tight">
           {titulo}
         </h3>
-        
+
         <p className="text-gray-400 text-sm leading-relaxed mb-4 sm:mb-6 line-clamp-3 font-light grow">
           {descripcion}
         </p>
@@ -32,11 +34,11 @@ function ArticleCard({ titulo, descripcion, img, id }) {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
             </svg>
           </span>
-          
+
           <span className="absolute flex items-center justify-center w-full h-full text-yellow-500 transition-all duration-300 transform group-hover/btn:translate-x-full ease uppercase text-sm tracking-wider">
             Leer Post
           </span>
-          
+
           <span className="relative invisible uppercase text-sm tracking-wider">Leer Post</span>
         </Link>
       </div>
