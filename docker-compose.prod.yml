@@ -1,18 +1,26 @@
 services:
   db:
     image: postgres:16
+    restart: unless-stopped
     environment:
       POSTGRES_DB: appetite
       POSTGRES_USER: appetite
       POSTGRES_PASSWORD: change_me
     volumes:
       - appetite_db:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U appetite -d appetite"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
     networks:
       - appetite_net
 
   backend:
     build:
       context: ./backend
+    restart: unless-stopped
     environment:
       DB_DIALECT: postgresql
       DB_HOST: db
@@ -20,7 +28,8 @@ services:
       DB_USER: appetite
       DB_PASSWORD: change_me
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     ports:
       - "172.17.0.1:8087:8000"
     networks:
